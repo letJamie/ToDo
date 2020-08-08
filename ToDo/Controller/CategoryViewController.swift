@@ -13,20 +13,20 @@ class CategoryViewController: UITableViewController {
     
     let realm = try! Realm()
     
-    var categories = [Category]()
+    var categories: Results<Category>?
     
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadCategories()
+      //  loadCategories()
         
     }
     
     //MARK: - TableView Datasource Methods
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return categories.count
+        return categories?.count ?? 1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -35,9 +35,9 @@ class CategoryViewController: UITableViewController {
         
         //let cell = UITableViewCell(style: .default, reuseIdentifier: "CategoryCell")
         
-        let item = categories[indexPath.row]
         
-        cell.textLabel?.text = item.name
+        
+        cell.textLabel?.text = categories?[indexPath.row].name ?? "Not added yet"
         
         //cell.accessoryType = (item.done == true) ? .checkmark : .none
         // cell.accessoryType = item.done ? .checkmark : .none
@@ -69,7 +69,7 @@ class CategoryViewController: UITableViewController {
             categories.name = textField.text!
             // item.done = false
             
-            self.categories.append(categories)
+            //self.categories.append(categories)
             
             self.save(category: categories)
             
@@ -99,6 +99,9 @@ class CategoryViewController: UITableViewController {
     }
     
     func loadCategories() {
+        
+        categories = realm.objects(Category.self)
+        
         
         //let request: NSfetchRe
         
@@ -133,7 +136,7 @@ class CategoryViewController: UITableViewController {
         
         if let indexPath = tableView.indexPathForSelectedRow {
             
-            destinationVC.selectedCategory = categories[indexPath.row]
+            destinationVC.selectedCategory = categories?[indexPath.row]
             
         }
     }
