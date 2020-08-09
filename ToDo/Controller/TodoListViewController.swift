@@ -67,13 +67,18 @@ class TodoListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(indexPath.row)
         
-        //        context.delete(itemArray[indexPath.row])
-        //        itemArray.remove(at: indexPath.row)
+        if let item = toDoItems?[indexPath.row] {
+            do {
+                try realm.write {
+                    item.done = !item.done
+                }
+                
+            } catch {
+                print("error")
+            }
+        }
         
-        //  toDoItems[indexPath.row].done = !toDoItems[indexPath.row].done
-        
-        //saveItems()
-        
+        tableView.reloadData()
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -95,6 +100,7 @@ class TodoListViewController: UITableViewController {
                     try self.realm.write {
                         let newItem = Item()
                         newItem.title = textField.text!
+                        newItem.dateCreated = Date()
                         
                         currentCategory.items.append(newItem)
                     }
@@ -120,54 +126,35 @@ class TodoListViewController: UITableViewController {
         
         toDoItems = selectedCategory?.items.sorted(byKeyPath: "title", ascending: true)
         
-        //        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
-        //
-        //        if let additionalPredicate = predicate {
-        //
-        //            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, additionalPredicate])
-        //
-        //        } else {
-        //            request.predicate = categoryPredicate
-        //        }
-        //
-        //        do {
-        //            itemArray = try context.fetch(request)
-        //        } catch {
-        //            print(error)
-        //        }
-        
         tableView.reloadData()
     }
     
 }
 
-//extension TodoListViewController: UISearchBarDelegate {
-//
-//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//
-//        let request: NSFetchRequest<Item> = Item.fetchRequest()
-//
-//        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
-//
-//        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-//
-//        loadItems(with: request, predicate: predicate)
-//
-//    }
-//
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//
-//        if searchBar.text?.count == 0 {
-//            loadItems()
-//        }
-//
-//        DispatchQueue.main.async {
-//            searchBar.resignFirstResponder()
-//        }
-//
-//    }
-//
-//
-//
-//}
+extension TodoListViewController: UISearchBarDelegate {
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
+        toDoItems = toDoItems?.filter("title CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "dateCreated", ascending: true)
+        
+        tableView.reloadData()
+
+    }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        if searchBar.text?.count == 0 {
+            loadItems()
+            
+            
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+            
+        }
+    }
+
+
+
+}
 
