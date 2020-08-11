@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class CategoryViewController: UITableViewController {
+class CategoryViewController: SwipeTableViewController {
     
     let realm = try! Realm()
     
@@ -21,6 +21,8 @@ class CategoryViewController: UITableViewController {
         super.viewDidLoad()
         loadCategories()
         
+        //tableView.rowHeight = 80
+        
     }
     
     //MARK: - TableView Datasource Methods
@@ -29,18 +31,12 @@ class CategoryViewController: UITableViewController {
         return categories?.count ?? 1
     }
     
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
-        
-        //let cell = UITableViewCell(style: .default, reuseIdentifier: "CategoryCell")
-        
-        
-        
-        cell.textLabel?.text = categories?[indexPath.row].name ?? "Not added yet"
-        
-        //cell.accessoryType = (item.done == true) ? .checkmark : .none
-        // cell.accessoryType = item.done ? .checkmark : .none
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+
+        cell.textLabel?.text = categories?[indexPath.row].name ?? "no Category"
         
         return cell
     }
@@ -48,41 +44,6 @@ class CategoryViewController: UITableViewController {
     
     
     //MARK: - Data Manipulation methods
-    
-    
-    
-    
-    //MARK: - Add New Categories
-    
-    
-    
-    
-    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
-        
-        var textField = UITextField()
-        
-        let alert = UIAlertController(title: "Add New Item", message: "", preferredStyle: .alert)
-        
-        let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
-            
-            let categories = Category()
-            categories.name = textField.text!
-            // item.done = false
-            
-            //self.categories.append(categories)
-            
-            self.save(category: categories)
-            
-        }
-        alert.addTextField { (alertTextField) in
-            alertTextField.placeholder = "Create New Category"
-            textField = alertTextField
-        }
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
-        
-        
-    }
     
     func save(category: Category) {
         
@@ -102,29 +63,64 @@ class CategoryViewController: UITableViewController {
         
         categories = realm.objects(Category.self)
         
+        tableView.reloadData()
         
-        //let request: NSfetchRe
-        
-//        do {
-//            categoryArray = try context.fetch(request)
-//        } catch {
-//            print(error)
-//        }
     }
+    
+    //MARK: - Delete Data From Swipe
+    
+    override func updateModel(at indexPath: IndexPath) {
+        
+        if let categoryForDeletion = self.categories?[indexPath.row] {
+            
+            do {
+                try self.realm.write {
+                    self.realm.delete(categoryForDeletion)
+                }
+            } catch {
+                print("error")
+            }
+        }
+    }
+    
+    
+    
+    
+    //MARK: - Add New Categories
+    
+    
+    
+    
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        
+        var textField = UITextField()
+        
+        let alert = UIAlertController(title: "Add New Item", message: "", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
+            
+            let categories = Category()
+            categories.name = textField.text!
+            
+            self.save(category: categories)
+            
+        }
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Create New Category"
+            textField = alertTextField
+        }
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+        
+        
+    }
+    
+    
     
     //MARK: - TableView Delegate Methods
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(indexPath.row)
-        
-        //        context.delete(itemArray[indexPath.row])
-        //        itemArray.remove(at: indexPath.row)
-        
-        //itemArray[indexPath.row].done = !itemArray[indexPath.row].done
-        
-        //saveItems()
-        
-        //tableView.deselectRow(at: indexPath, animated: true)
         
         performSegue(withIdentifier: "goToItems", sender: self)
         
@@ -141,3 +137,4 @@ class CategoryViewController: UITableViewController {
         }
     }
 }
+

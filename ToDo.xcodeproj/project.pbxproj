@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6F8ECAE08E5D8F357F8014A4 /* Pods_ToDo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38E803A8C3AD49B5D399B5B7 /* Pods_ToDo.framework */; };
+		7D03180524E04188003DDC07 /* SwipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D03180424E04188003DDC07 /* SwipeTableViewController.swift */; };
 		7D2CBB2224DD96DE00B069FF /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D2CBB2124DD96DE00B069FF /* Item.swift */; };
 		7D2CBB2424DD96EE00B069FF /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D2CBB2324DD96EE00B069FF /* Category.swift */; };
 		7D75987924CD8DFF00C563DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D75987824CD8DFF00C563DD /* AppDelegate.swift */; };
@@ -21,6 +22,7 @@
 
 /* Begin PBXFileReference section */
 		38E803A8C3AD49B5D399B5B7 /* Pods_ToDo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ToDo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D03180424E04188003DDC07 /* SwipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeTableViewController.swift; sourceTree = "<group>"; };
 		7D2CBB2124DD96DE00B069FF /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		7D2CBB2324DD96EE00B069FF /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		7D75987524CD8DFF00C563DD /* ToDo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -103,6 +105,7 @@
 			children = (
 				7D7598DA24DAF11B00C563DD /* CategoryViewController.swift */,
 				7D75987C24CD8DFF00C563DD /* TodoListViewController.swift */,
+				7D03180424E04188003DDC07 /* SwipeTableViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -242,6 +245,7 @@
 				7D7598DB24DAF11C00C563DD /* CategoryViewController.swift in Sources */,
 				7D75987D24CD8DFF00C563DD /* TodoListViewController.swift in Sources */,
 				7D75987924CD8DFF00C563DD /* AppDelegate.swift in Sources */,
+				7D03180524E04188003DDC07 /* SwipeTableViewController.swift in Sources */,
 				7D2CBB2224DD96DE00B069FF /* Item.swift in Sources */,
 				7D75987B24CD8DFF00C563DD /* SceneDelegate.swift in Sources */,
 				7D2CBB2424DD96EE00B069FF /* Category.swift in Sources */,

@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class TodoListViewController: UITableViewController {
+class TodoListViewController: SwipeTableViewController {
     
     var toDoItems: Results<Item>?
     
@@ -24,13 +24,6 @@ class TodoListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
-        //        if let items = defaults.array(forKey: "TodoListArray") as? [Item] {
-        //
-        //            itemArray = items
-        //
-        //        }
-        
     }
     
     //MARK - Tableview Datasource Method
@@ -40,10 +33,9 @@ class TodoListViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
         
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "ToDoItemCell")
-        
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+         
         if let item = toDoItems?[indexPath.row] {
             
             cell.textLabel?.text = item.title
@@ -128,8 +120,24 @@ class TodoListViewController: UITableViewController {
         
         tableView.reloadData()
     }
+    //MARK: - Delete Data From Swipe
     
+    override func updateModel(at indexPath: IndexPath) {
+        
+        if let itmeForDeletion = self.toDoItems?[indexPath.row] {
+            
+            do {
+                try self.realm.write {
+                    self.realm.delete(itmeForDeletion)
+                }
+            } catch {
+                print("error")
+            }
+        }
+    }
 }
+
+
 
 extension TodoListViewController: UISearchBarDelegate {
 
